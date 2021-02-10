@@ -4,6 +4,7 @@ var riakNodes = ['localhost:8087'];
 
 async function main() {
   var client = await createClientConnection();
+  await createActivity(client, "key-value-store-demo", "Demo with Riak");
   stopClientConnection(client);
 }
 main();
@@ -41,5 +42,33 @@ function stopClientConnection(client) {
     } else {
       console.log("connection is closed");
     }
+  })
+}
+/**
+ * 
+ * @param {RiakClient} client 
+ * @param {string} name 
+ * @param {string} description 
+ */
+function createActivity(client, name, description) {
+  var activity = {
+    name: name,
+    desc: description
+  };
+  return new Promise((resolve, reject) => {
+    client.storeValue({
+      bucket: 'activities',
+      key: name,
+      value: activity,
+      returnBody: true,
+      convertToJs: true
+    }, (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      var riakObj = result.values.shift();
+      console.log('activity is saved', riakObj.value);
+      resolve(riakObj.value);
+    })
   })
 }

@@ -28,7 +28,7 @@ jobs:
       with:
         # Image
         image: basho/riak-kv
-        options: -d -p 8087:8087 -p 8098:8098
+        options: -p 8087:8087 -p 8098:8098
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:

@@ -7,6 +7,9 @@ async function main() {
   await createActivity(client, "key-value-store-demo", "Demo with Riak");
   var activity = await getActivity(client, "key-value-store-demo");
   console.log('activity is ', activity);
+  await deleteActivity(client, "key-value-store-demo");
+  var activityExist = await isActivityExist(client, "key-value-store-demo");
+  console.log('activity exist ', activityExist);
   stopClientConnection(client);
 }
 main();
@@ -90,9 +93,47 @@ async function getActivity(client, name) {
         reject(err);
       } else {
         var riakObj = result.values.shift();
-        var activity = riakObj.value;
-        resolve(activity);
+        if (!riakObj) {
+          reject("Activity does not exist");          
+        } else {
+          var activity = riakObj.value;
+          resolve(activity);
+
+        }
       }
     })
   })
+}
+/**
+ * 
+ * @param {RiakClient} client 
+ * @param {string} name 
+ */
+async function deleteActivity(client, name) {
+  return new Promise((resolve, reject) => {
+    client.deleteValue({
+      bucket: 'activities',
+      key: name
+    }, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log('activity is deleted ', name );
+        resolve(name);
+      }
+    })
+  })
+}
+/**
+ * 
+ * @param {RiakClient} client 
+ * @param {string} name 
+ */
+async function isActivityExist(client, name) {
+  try {
+    var activity = await getActivity(client, name);
+    return activity;
+  } catch(e) {
+    return false;
+  }
 }

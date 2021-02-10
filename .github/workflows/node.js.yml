@@ -29,15 +29,10 @@ jobs:
         # Image
         image: basho/riak-kv
         options: -p 8087:8087 -p 8098:8098
-    - name: Wait / Sleep
-      # You may pin to the exact commit or the version.
-      # uses: jakejarvis/wait-action@17bc522f2e14945ea2a05bfc72b6cb9e18a066e3
-      uses: jakejarvis/wait-action@v0.1.0
-      with:
-        time: '30s'
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+    - run: sleep 30
     - run: node ./intro-to-riak.js

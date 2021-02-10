@@ -8,6 +8,9 @@ async function main() {
 }
 main();
 
+/**
+ * @returns {Promise<RiakClient>}
+ */
 async function createClientConnection() {
   return new Promise((resolve, reject) => {
     var riakClient = new RiakClient(riakNodes, (err, client) => {
@@ -27,6 +30,10 @@ async function createClientConnection() {
 
 }
 
+/**
+ * 
+ * @param {RiakClient} client 
+ */
 function stopClientConnection(client) {
   client.stop((err) => {
     if (err) {

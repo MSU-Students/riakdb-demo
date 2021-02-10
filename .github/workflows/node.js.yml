@@ -25,10 +25,10 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: addnab/docker-run-action@1cd63ec344892b3e6174b19bde301d071a573ade
       uses: addnab/docker-run-action@v1
-        with:
-          # Image
-          image: basho/riak-kv
-          options: -d -p 8087:8087 -p 8098:8098
+      with:
+        # Image
+        image: basho/riak-kv
+        options: -d -p 8087:8087 -p 8098:8098
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
